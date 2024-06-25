@@ -3,9 +3,9 @@ E01 - Getting Started
 Loading Data
 */
 
-CREATE DATABASE e01;
+CREATE DATABASE E01;
 GO
-USE e01;
+USE E01;
 GO
 
 CREATE TABLE users (
@@ -25,5 +25,5 @@ SELECT * FROM users;
 -- Cleaning up
 USE master;
 GO
-DROP DATABASE e01;
+DROP DATABASE E01;
 GO
