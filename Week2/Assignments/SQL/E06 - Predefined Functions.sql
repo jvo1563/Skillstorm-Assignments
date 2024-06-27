@@ -87,6 +87,7 @@ FROM users
 GROUP BY YEAR(created_ts)
 ORDER BY created_year;
 
+
 -- Exercise 2
 SELECT
 	user_id,
@@ -97,3 +98,90 @@ FROM users
 WHERE
 	MONTH(user_dob) = 5
 ORDER BY DAY(user_dob);
+
+
+-- Exercise 3
+SELECT
+	user_id,
+	UPPER(CONCAT(user_first_name, ' ', user_last_name)) AS user_name,
+	user_email_id,
+	created_ts,
+	CAST(YEAR(created_ts) AS DECIMAL(5,1)) AS created_year
+FROM users
+WHERE
+	YEAR(created_ts) = 2019
+ORDER BY user_name;
+
+
+-- Exercise 4
+SELECT
+	user_gender = CASE user_gender
+		WHEN 'F' THEN 'Female'
+		WHEN 'M' THEN 'Male'
+		WHEN 'N' THEN 'Non-Binary'
+		ELSE 'Not Specified'
+		END,
+	COUNT(1) as user_count
+FROM users
+GROUP BY user_gender
+ORDER BY user_count DESC;
+
+
+-- Exercise 5
+SELECT
+	user_id,
+	user_unique_id,
+	CASE
+		WHEN user_unique_id is NULL THEN 'Not Specified'
+		WHEN LEN(REPLACE(user_unique_id, '-', '')) < 9 THEN 'Invalid Unique Id'
+		ELSE RIGHT(REPLACE(user_unique_id, '-', ''), 4)
+		END as user_unique_id_last4
+FROM users;
+
+
+-- Exercise 6
+WITH country_code_table AS (
+	SELECT
+		CASE 
+			WHEN user_phone_no is NULL THEN NULL
+			ELSE CAST(SUBSTRING(user_phone_no, 2, CHARINDEX('(',user_phone_no)-3) AS INT)
+			END AS country_code,
+		COUNT(1) as user_count
+	FROM users
+	WHERE user_phone_no is not NULL
+	GROUP BY user_phone_no
+)
+SELECT
+	country_code,
+	COUNT(1) as user_count
+FROM country_code_table 
+GROUP BY country_code
+ORDER BY country_code;
+
+
+-- Exercise 7
+USE retail_db
+
+SELECT
+	COUNT(1) as count
+FROM order_items
+WHERE order_item_subtotal != CAST((order_item_product_price * order_item_quantity) AS DECIMAL(18,2))
+
+
+-- Exercise 8
+WITH orders_day_type AS (
+	SELECT
+		CASE
+			WHEN DATENAME(dw, order_date) in ('Saturday', 'Sunday') THEN 'Weekend days'
+			ELSE 'Week days'
+			END AS day_type
+	FROM orders
+	WHERE
+		YEAR(order_date) = 2014 AND MONTH(order_date) = 1
+)
+SELECT
+	day_type,
+	COUNT(1) AS order_count
+FROM orders_day_type
+GROUP BY day_type
+ORDER BY order_count;
