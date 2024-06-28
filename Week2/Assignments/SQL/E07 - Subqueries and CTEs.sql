@@ -33,29 +33,18 @@ ORDER BY o.order_customer_id
 
 
 -- Exercise 3
-
--- Find all orders in oct 2013
-WITH orders_oct_13 AS (
+SELECT 
+	product_name,
+	AVG(order_item_product_price) OVER () avg_price
+FROM (
 	SELECT order_id
 	FROM orders
 	WHERE YEAR(order_date)=2013 AND MONTH(order_date)=10
-)
+) o
+JOIN order_items oi ON oi.order_item_order_id = o.order_id
+JOIN products p ON p.product_id = oi.order_item_product_id
+GROUP BY product_name,order_item_product_price;
 
-SELECT
-	p.product_id,
-	p.product_name,
-	CAST(SUM(o.order_item_subtotal) / SUM(o.order_item_quantity) AS DECIMAL(18,2)) AS average_price_sold
-FROM (
-	SELECT 
-		order_item_product_id,
-		order_item_quantity,
-		order_item_subtotal
-	FROM orders_oct_13 o13
-	JOIN order_items oi ON oi.order_item_order_id = o13.order_id
-) as o
-JOIN products p ON p.product_id = o.order_item_product_id
-GROUP BY p.product_id, p.product_name
-ORDER BY p.product_id;
 
 -- Exercise 4
 
