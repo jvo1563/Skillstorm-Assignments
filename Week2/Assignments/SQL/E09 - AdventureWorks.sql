@@ -220,3 +220,23 @@ FROM Sales.SalesOrderHeader
 
 
 -- Challenging Queries With Analytics Funtions
+
+-- Determine the top 5 products with the highest average sales and their growth rate from the previous month.
+-- Calculate average sales for each product
+SELECT * FROM Sales.SalesOrderDetail;
+SELECT * FROM Sales.SalesOrderHeader;
+WITH ProductSales AS (
+	SELECT 
+		d.ProductID,
+		AVG(d.LineTotal) AS AvgSales,
+		DATEFROMPARTS(YEAR(h.OrderDate), MONTH(h.OrderDate), 1) AS MonthStartDate,
+		ROW_NUMBER() OVER (ORDER BY AVG(d.LineTotal) DESC) AS RankByAvgSales
+	FROM Sales.SalesOrderDetail d
+	JOIN Sales.SalesOrderHeader h ON d.SalesOrderID = h.SalesOrderID
+	GROUP BY d.ProductID, YEAR(OrderDate), MONTH(OrderDate)
+)
+
+SELECT
+	ProductID
+
+FROM ProductSales;
