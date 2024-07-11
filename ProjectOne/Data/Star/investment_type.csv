@@ -1,4 +1,4 @@
-investment_type_id,type
+investment_type_id,investment_type
 1,Stock
 2,ETF
 3,Forex
