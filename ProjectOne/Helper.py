@@ -86,14 +86,12 @@ def get_portfolio_performance(metrics, portfolio):
 
 
 def cumulative_graph(metrics):
-    graph = sns.lineplot(
-        data=metrics,
-        x="day",
-        y="cumulative_return",
-        hue="name",
-        palette="tab10",
+    latest_date = metrics["date"].max()
+    df = metrics[metrics["date"] == latest_date]
+    graph = sns.barplot(
+        data=df, x="name", y="cumulative_return", hue="name", legend=False
     )
-    graph.set(xlabel="Day", ylabel="Cumulative Return")
+    graph.set(xlabel="Name", ylabel="Cumulative Return")
     return graph
 
 
@@ -148,11 +146,6 @@ def sharpe_graph(metrics):
 def beta_graph(metrics):
     df = metrics
     df.drop(df[df.name == "USDCAD"].index, inplace=True)
-    graphs = sns.barplot(
-        data=metrics,
-        x="name",
-        y="beta",
-        palette="tab10",
-    )
-    graphs.set(xlabel="Day", ylabel="Beta")
+    graphs = sns.barplot(data=metrics, x="name", y="beta", hue="name", legend=False)
+    graphs.set(xlabel="Name", ylabel="Beta")
     return graphs
