@@ -50,8 +50,19 @@ CREATE TABLE investment (
 );
 GO
 
+
 BULK INSERT dbo.investment_name FROM 'C:\Users\Joeny\Desktop\Skillstorm\Skillstorm-Assignments\ProjectOne\Data\Star\investment_name.csv' WITH (FORMAT='CSV', ROWTERMINATOR = '0x0a', FIRSTROW=2) ;
 BULK INSERT dbo.investment_sector FROM 'C:\Users\Joeny\Desktop\Skillstorm\Skillstorm-Assignments\ProjectOne\Data\Star\investment_sector.csv' WITH (FORMAT='CSV', ROWTERMINATOR = '0x0a', FIRSTROW=2) ;
 BULK INSERT dbo.investment_type FROM 'C:\Users\Joeny\Desktop\Skillstorm\Skillstorm-Assignments\ProjectOne\Data\Star\investment_type.csv' WITH (FORMAT='CSV', ROWTERMINATOR = '0x0a', FIRSTROW=2) ;
 BULK INSERT dbo.investment_time FROM 'C:\Users\Joeny\Desktop\Skillstorm\Skillstorm-Assignments\ProjectOne\Data\Star\investment_time.csv' WITH (FORMAT='CSV', ROWTERMINATOR = '0x0a', FIRSTROW=2) ;
 BULK INSERT dbo.investment FROM 'C:\Users\Joeny\Desktop\Skillstorm\Skillstorm-Assignments\ProjectOne\Data\Star\investments.csv' WITH (FORMAT='CSV', ROWTERMINATOR = '0x0a', FIRSTROW=2) ;
+
+UPDATE investment_name
+SET investment_name = REPLACE(investment_name, CHAR(13), '')
+
+UPDATE investment_sector
+SET investment_sector = REPLACE(investment_sector, CHAR(13), '')
+
+UPDATE investment_type
+SET investment_type = REPLACE(investment_type, CHAR(13), '')
+GO
