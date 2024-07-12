@@ -2,8 +2,10 @@ USE investment_db;
 GO
 
 SELECT * FROM investment;
+SELECT * FROM investment_name;
 SELECT * FROM investment_type;
-
+SELECT * FROM investment_sector;
+SELECT * FROM investment_time;
 SELECT
 	n.investment_name AS [name],
 	t.investment_date AS [date],
